@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+.env
+backend/.env
+
+# Node
+node_modules/
+dist/
+frontend/node_modules/
+frontend/dist/
+
+# App data
+backend/uploads/
+*.joblib
+*.pkl
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
