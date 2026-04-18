@@ -2,7 +2,7 @@
 
 BiasLens AI is a full-stack fairness intelligence product that detects, visualizes, explains, and mitigates bias in ML systems. It is designed for hackathons, but the structure and workflows are production-oriented: clear API boundaries, persisted uploads, explainability with Gemini, fairness metrics with Fairlearn and AIF360, and a dashboard that surfaces tradeoffs instead of hiding them. 
 
-## What it does
+## What it does 
 
 - Upload a CSV dataset and optionally a trained model.
 - Auto-detect likely sensitive attributes such as gender, caste, age, and income.
