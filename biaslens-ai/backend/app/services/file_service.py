@@ -1,8 +1,10 @@
 import json
 import math
+import os
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from tempfile import gettempdir
 from typing import Any, Dict, Optional
 
 import pandas as pd
@@ -13,10 +15,26 @@ from app.core.config import get_settings
 
 settings = get_settings()
 BASE_DIR = Path(__file__).resolve().parents[2]
-UPLOAD_DIR = Path(settings.uploads_dir)
-if not UPLOAD_DIR.is_absolute():
-    UPLOAD_DIR = BASE_DIR.parent / UPLOAD_DIR
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _resolve_upload_dir() -> Path:
+    configured_dir = Path(settings.uploads_dir)
+    if not configured_dir.is_absolute():
+        configured_dir = BASE_DIR.parent / configured_dir
+
+    # Vercel serverless file system allows writes only in the temp directory.
+    temp_upload_dir = Path(gettempdir()) / "biaslens_uploads"
+    preferred_dir = temp_upload_dir if os.getenv("VERCEL") else configured_dir
+
+    try:
+        preferred_dir.mkdir(parents=True, exist_ok=True)
+        return preferred_dir
+    except OSError:
+        temp_upload_dir.mkdir(parents=True, exist_ok=True)
+        return temp_upload_dir
+
+
+UPLOAD_DIR = _resolve_upload_dir()
 
 METADATA_SUFFIX = ".json"
 
