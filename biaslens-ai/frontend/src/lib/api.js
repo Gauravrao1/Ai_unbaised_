@@ -1,12 +1,18 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 async function request(path, options = {}) {
-  const response = await fetch(`${API_URL}${path}`, {
-    headers: {
-      ...(options.headers || {}),
-    },
-    ...options,
-  })
+  let response
+
+  try {
+    response = await fetch(`${API_URL}${path}`, {
+      headers: {
+        ...(options.headers || {}),
+      },
+      ...options,
+    })
+  } catch (error) {
+    throw new Error(`Unable to reach backend at ${API_URL}. Check VITE_API_URL and CORS settings.`)
+  }
 
   if (!response.ok) {
     const errorPayload = await response.json().catch(() => ({}))

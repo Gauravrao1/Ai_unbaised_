@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowRight, FileUp, Sparkles } from 'lucide-react'
+import { ArrowRight, FileUp, ShieldCheck, Sparkles, Zap } from 'lucide-react'
 import ResultsPage from './pages/ResultsPage'
 import { analyzeBias, explainBias, mitigateBias, uploadArtifacts } from './lib/api'
 
@@ -130,19 +130,45 @@ export default function App() {
                 BiasLens AI
               </h1>
               <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
-                A startup-style fairness dashboard that detects bias in datasets and ML models, explains it in plain language,
-                and suggests mitigations that reduce inequality across gender, caste, age, and income groups.
+                A modern fairness dashboard that surfaces bias, explains it clearly, and suggests practical fixes.
               </p>
             </div>
             <div className="grid gap-3 sm:min-w-[320px]">
-              <div className="rounded-2xl border border-slate-700/70 bg-slate-950/50 p-4">
-                <div className="text-xs uppercase tracking-[0.24em] text-slate-400">Current mode</div>
-                <div className="mt-2 text-lg font-semibold text-white">
-                  {view === 'results' ? 'Results page with expandable visualizations' : 'Bias analysis + AI explanation + mitigation'}
+              <div className="rounded-[1.75rem] border border-slate-700/70 bg-slate-950/50 p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-xs uppercase tracking-[0.24em] text-slate-400">Live preview</div>
+                    <div className="mt-2 text-lg font-semibold text-white">BiasLens dashboard</div>
+                  </div>
+                  <div className="rounded-full border border-cyan-400/25 bg-cyan-400/10 p-3 text-cyan-200">
+                    <ShieldCheck className="h-5 w-5" />
+                  </div>
                 </div>
-              </div>
-              <div className="rounded-2xl border border-slate-700/70 bg-slate-950/50 p-4 text-sm text-slate-300">
-                Frontend: React + Tailwind + Recharts. Backend: FastAPI + Fairlearn + AIF360 + Gemini.
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <MiniStat label="Fairness" value="A+" tone="accent" />
+                  <MiniStat label="Risk" value="Low" tone="warning" />
+                  <MiniStat label="Speed" value="Fast" tone="info" />
+                </div>
+
+                <div className="mt-5 rounded-3xl border border-slate-700/60 bg-slate-950/60 p-4">
+                  <div className="flex items-end justify-between gap-3">
+                    <div>
+                      <div className="text-xs uppercase tracking-[0.24em] text-slate-500">Signal</div>
+                      <div className="mt-1 text-sm font-medium text-slate-100">Model fairness snapshot</div>
+                    </div>
+                    <Zap className="h-5 w-5 text-cyan-300" />
+                  </div>
+                  <div className="mt-4 flex items-end gap-2">
+                    <div className="h-10 w-6 rounded-t-2xl bg-cyan-400/90" />
+                    <div className="h-16 w-6 rounded-t-2xl bg-emerald-400/80" />
+                    <div className="h-12 w-6 rounded-t-2xl bg-sky-400/70" />
+                    <div className="h-20 w-6 rounded-t-2xl bg-cyan-300/90" />
+                    <div className="h-14 w-6 rounded-t-2xl bg-slate-500/80" />
+                    <div className="h-24 w-6 rounded-t-2xl bg-emerald-300/90" />
+                    <div className="h-16 w-6 rounded-t-2xl bg-cyan-400/70" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -221,31 +247,22 @@ export default function App() {
             </section>
 
             <section className="glass-panel rounded-[2rem] p-6 lg:p-8">
-              <div className="mb-6">
-                <div className="text-xs uppercase tracking-[0.24em] text-slate-400">What you get</div>
-                <h2 className="mt-2 font-display text-2xl font-semibold text-white">A separate result page after analysis</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  After you run the analysis, the app switches into a dedicated dashboard view with expandable visual cards.
-                </p>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-xs uppercase tracking-[0.24em] text-slate-400">Preview</div>
+                  <h2 className="mt-2 font-display text-2xl font-semibold text-white">Clean, focused, and readable</h2>
+                </div>
+                <div className="hidden sm:flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-950/50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
+                  <ShieldCheck className="h-4 w-4 text-cyan-300" />
+                  Minimal text
+                </div>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <InfoTile
-                  title="Seamless page switch"
-                  text="Results move into a dedicated view without a hard reload, so the experience feels like a real app."
-                />
-                <InfoTile
-                  title="Expand and collapse"
-                  text="Every chart and key visualization can be minimized or maximized to fit your screen."
-                />
-                <InfoTile
-                  title="Downloadable report"
-                  text="Export the analysis, mitigation, and explanation as JSON for sharing or follow-up."
-                />
-                <InfoTile
-                  title="Indian fairness context"
-                  text="The dashboard keeps the SDG 10 narrative visible with caste and gender impact framing."
-                />
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <FeatureCard title="Instant flow" tone="cyan" />
+                <FeatureCard title="Polished charts" tone="emerald" />
+                <FeatureCard title="Clear actions" tone="sky" />
+                <FeatureCard title="Strong contrast" tone="slate" />
               </div>
             </section>
           </main>
@@ -275,11 +292,35 @@ export default function App() {
   )
 }
 
-function InfoTile({ title, text }) {
+function MiniStat({ label, value, tone }) {
+  const tones = {
+    accent: 'border-cyan-400/25 bg-cyan-400/10 text-cyan-100',
+    warning: 'border-amber-400/25 bg-amber-400/10 text-amber-100',
+    info: 'border-emerald-400/25 bg-emerald-400/10 text-emerald-100',
+  }
+
   return (
-    <div className="rounded-3xl border border-slate-700/70 bg-slate-950/40 p-5">
+    <div className={`rounded-2xl border px-3 py-3 text-center ${tones[tone] || tones.accent}`}>
+      <div className="text-[0.65rem] uppercase tracking-[0.22em] text-current/70">{label}</div>
+      <div className="mt-2 text-lg font-semibold text-current">{value}</div>
+    </div>
+  )
+}
+
+function FeatureCard({ title, tone }) {
+  const tones = {
+    cyan: 'from-cyan-400/18 to-cyan-400/6 border-cyan-400/20',
+    emerald: 'from-emerald-400/18 to-emerald-400/6 border-emerald-400/20',
+    sky: 'from-sky-400/18 to-sky-400/6 border-sky-400/20',
+    slate: 'from-slate-400/14 to-slate-400/6 border-slate-400/18',
+  }
+
+  return (
+    <div className={`rounded-3xl border bg-gradient-to-br p-5 ${tones[tone] || tones.slate}`}>
       <div className="text-sm font-semibold text-white">{title}</div>
-      <div className="mt-2 text-sm leading-6 text-slate-300">{text}</div>
+      <div className="mt-4 h-2 rounded-full bg-white/10">
+        <div className="h-2 rounded-full bg-white/60" style={{ width: tone === 'emerald' ? '82%' : tone === 'sky' ? '68%' : tone === 'cyan' ? '74%' : '62%' }} />
+      </div>
     </div>
   )
 }
