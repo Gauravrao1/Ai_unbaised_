@@ -1,10 +1,6 @@
-const API_URL = import.meta.env.VITE_API_URL?.trim() || ''
+const API_URL = (import.meta.env.VITE_API_URL?.trim() || 'https://biaslens-ai-backend.onrender.com').replace(/\/$/, '')
 
 async function request(path, options = {}) {
-  if (!API_URL) {
-    throw new Error('VITE_API_URL is not configured for this build. Set it to your deployed backend URL in Vercel.')
-  }
-
   let response
 
   try {
