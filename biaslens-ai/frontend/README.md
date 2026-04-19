@@ -7,4 +7,4 @@ npm install
 npm run dev
 ```
 
-Set `VITE_API_URL` in `.env` to point at the FastAPI backend.
+Set `VITE_API_URL` in `.env` for local development and in Vercel project settings for deployment.
