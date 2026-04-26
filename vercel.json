@@ -1,5 +1,8 @@
 {
   "installCommand": "cd biaslens-ai/frontend && npm install",
   "buildCommand": "cd biaslens-ai/frontend && npm run build",
-  "outputDirectory": "biaslens-ai/frontend/dist"
+  "outputDirectory": "biaslens-ai/frontend/dist",
+  "env": {
+    "VITE_API_URL": "https://ai-backend-fawn-nine.vercel.app"
+  }
 }

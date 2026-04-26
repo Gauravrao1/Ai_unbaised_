@@ -1,4 +1,8 @@
-const API_URL = (import.meta.env.VITE_API_URL?.trim() || 'https://biaslens-ai-backend.onrender.com').replace(/\/$/, '')
+const API_URL = (import.meta.env.VITE_API_URL?.trim() || '').replace(/\/$/, '')
+
+if (!API_URL) {
+  throw new Error('VITE_API_URL is not configured. Set it to the deployed BiasLens backend URL.')
+}
 
 async function request(path, options = {}) {
   let response
@@ -11,7 +15,7 @@ async function request(path, options = {}) {
       ...options,
     })
   } catch (error) {
-    throw new Error(`Unable to reach backend at ${API_URL}. Check VITE_API_URL and CORS settings.`)
+    throw new Error(`Unable to reach backend at ${API_URL}. Check VITE_API_URL, CORS settings, and whether the backend deployment is live.`)
   }
 
   if (!response.ok) {
